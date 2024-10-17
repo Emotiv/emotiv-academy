@@ -29,9 +29,6 @@ To run the existing example you will need to do a few things.
 6. Finally, the first time you run these examples, you also need to authorize
    them in the EMOTIV Launcher.
 
-This code is purely an example of how to work with Cortex.  We strongly
-recommend adjusting the code to your purposes.
-
 ## Cortex Library
 - [`cortex.py`](./cortex.py) - the wrapper lib around EMOTIV Cortex API.
 
