@@ -1,0 +1,28 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>icons/skip-next-outline-svgrepo-com.svg</file>
+    <file>icons/play.svg</file>
+    <file>icons/next.svg</file>
+    <file>icons/activity.svg</file>
+    <file>icons/archive.svg</file>
+    <file>icons/book-open.svg</file>
+    <file>icons/fast-forward.svg</file>
+    <file>icons/headphones.svg</file>
+    <file>icons/help-circle.svg</file>
+    <file>icons/menu.svg</file>
+    <file>icons/pause.svg</file>
+    <file>icons/power.svg</file>
+    <file>icons/printer.svg</file>
+    <file>icons/settings.svg</file>
+    <file>icons/smartphone.svg</file>
+    <file>icons/type.svg</file>
+    <file>icons/zap.svg</file>
+    <file>icons/zap-off.svg</file>
+  </qresource>
+  <qresource prefix="photos">
+    <file>logo.png</file>
+    <file>Assets/gaming.JPG</file>
+    <file>Assets/paint.jpg</file>
+    <file>Assets/frog.png</file>
+  </qresource>
+</RCC>
