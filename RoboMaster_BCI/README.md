@@ -33,24 +33,7 @@ To run the existing example you will need to do a few things.
 - [`cortex.py`](./cortex.py) - the wrapper lib around EMOTIV Cortex API.
 
 ## Susbcribe Data
-- [`sub_data.py`](./sub_data.py) shows data streaming from Cortex: EEG, motion, band power and Performance Metrics.
+- [`live_advance.py`](./live_advance.py) shows data streaming from Cortex: EEG, motion, band power and Performance Metrics.
 - For more details https://emotiv.gitbook.io/cortex-api/data-subscription
-
-## BCI
-- [`mental_command_train.py`](./mental_command_train.py) shows Mental Command training.
-- [`facial_expression_train.py`](./facial_expression_train.py) shows facial expression training.
-- For more details https://emotiv.gitbook.io/cortex-api/bci
-
-## Advanced BCI
-- [`live_advance.py`](./live_advance.py) shows the ability to get and set sensitivity of mental command action in live mode.
-- For more details https://emotiv.gitbook.io/cortex-api/advanced-bci
-
-## Create record and export to file
-- [`record.py`](./record.py) shows how to create record and export data to CSV or EDF format.
-- For more details https://emotiv.gitbook.io/cortex-api/records
-
-## Inject marker while recording
-- [`marker.py`](./marker.py) shows how to inject marker during a recording.
-- For more details https://emotiv.gitbook.io/cortex-api/markers
 
 
