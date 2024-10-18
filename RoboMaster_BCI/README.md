@@ -32,6 +32,10 @@ To run the existing example you will need to do a few things.
 ## Cortex Library
 - [`cortex.py`](./cortex.py) - the wrapper lib around EMOTIV Cortex API.
 
+## Main
+- [`main.py`](./main.py)
+- Fill in your Cortex client secret, client ID and trained profile name from EmotivBCI to get started.
+
 ## Susbcribe Data
 - [`live_advance.py`](./live_advance.py) shows data streaming from Cortex: EEG, motion, band power and Performance Metrics.
 - For more details https://emotiv.gitbook.io/cortex-api/data-subscription
