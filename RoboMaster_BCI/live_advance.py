@@ -311,8 +311,8 @@ class LiveAdvance():
 # def main():
 #
 #     # Please fill your application clientId and clientSecret before running script
-#     your_app_client_id = 'JLuMZwsnMkvrEo5eGR7wwazyXRfjdBBg1KnGC5id'
-#     your_app_client_secret = 'f2tHNJAVA5O2eza6GkPX5DeZni8J7TW2tI3IuO6YFISdxGmGBtLLm2SvpMTz53TGLvPiZJMw45Mnljnjt1UCSc7r7FXvjcsUOGOB6DHJbg6GU06NtbLCqRiRIDQiDyFz'
+#     your_app_client_id = ''
+#     your_app_client_secret = ''
 #
 #
 #     # Init live advance
