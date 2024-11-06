@@ -1,0 +1,123 @@
+[
+    {
+        "id": "de0ea597316bf622",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "3cd4be1f8f03bbec",
+        "type": "EMOTIV",
+        "z": "de0ea597316bf622",
+        "name": "EMOTIV",
+        "x": 160,
+        "y": 180,
+        "wires": [
+            [
+                "16f738a66a93923e"
+            ]
+        ]
+    },
+    {
+        "id": "16f738a66a93923e",
+        "type": "Mental-Command",
+        "z": "de0ea597316bf622",
+        "name": "Mental Commands",
+        "actionName": "push",
+        "mcSen": 10,
+        "x": 370,
+        "y": 180,
+        "wires": [
+            [
+                "f9bfa6080a097b45",
+                "5fdc69abe065818b"
+            ]
+        ]
+    },
+    {
+        "id": "f9bfa6080a097b45",
+        "type": "switch",
+        "z": "de0ea597316bf622",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gte",
+                "v": "50",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 610,
+        "y": 100,
+        "wires": [
+            [
+                "b364f6b99328df8d"
+            ]
+        ]
+    },
+    {
+        "id": "5fdc69abe065818b",
+        "type": "switch",
+        "z": "de0ea597316bf622",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "lte",
+                "v": "50",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 610,
+        "y": 280,
+        "wires": [
+            [
+                "48099a84972a5290"
+            ]
+        ]
+    },
+    {
+        "id": "b364f6b99328df8d",
+        "type": "lifx-set-state",
+        "z": "de0ea597316bf622",
+        "name": "",
+        "api": "",
+        "selector": "",
+        "power": "",
+        "color": "pink",
+        "brightness": "",
+        "duration": "",
+        "infrared": "",
+        "fast": "true",
+        "x": 820,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "48099a84972a5290",
+        "type": "lifx-set-state",
+        "z": "de0ea597316bf622",
+        "name": "",
+        "api": "",
+        "selector": "",
+        "power": "",
+        "color": "green",
+        "brightness": "",
+        "duration": "",
+        "infrared": "",
+        "fast": "true",
+        "x": 840,
+        "y": 280,
+        "wires": []
+    }
+]
