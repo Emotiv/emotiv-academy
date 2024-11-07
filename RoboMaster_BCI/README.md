@@ -1,6 +1,8 @@
 Developed in Collaboration with the Imagination Center at the Glenrose Rehabilitation Hospital. https://www.imagination-centre.ca/
 
-# Python Example
+# Brain Computer Interface Controlled DJI RoboMaster
+
+You can see the step-by-step tutorial here: https://www.youtube.com/watch?v=9G00Tl1ymNI.
 
 ## Requirement
 - This example works with Python >= 3.7
