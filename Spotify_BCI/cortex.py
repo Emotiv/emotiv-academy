@@ -4,7 +4,7 @@ import json
 import ssl
 import time
 import sys
-from pydispatch import Dispatcher
+from pydispatch import Dispatcher # 'pip install PyDispatcher' for install
 import warnings
 import threading
 
