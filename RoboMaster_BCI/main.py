@@ -7,25 +7,33 @@ from save_config import save_config
 from live_advance import LiveAdvance
 import threading
 
-your_app_client_id = 'mHi4rhpLHNx7raXny1fa1v2SDx0w0wL5G47XqxHJ' # Enter your Cortex client ID here
-your_app_client_secret = 'rDSLvEB3l1325iUcNCg2UUaRg0oJlpH8XhOznNeMlkzLfXLfeh6gp5bzk355wxWU9mzzo8E05LHKtlggFaVq3PnT4IflHnEKsbhORggbqhsmnfvWDg29CMCUfLNzmTey' # Enter your Cortex client secret here
-trained_profile_name = 'HoangInsight' # Enter your trained profile name from EmotivBCI here
-trained_cmd = 'push'
+from PyQt6.QtWidgets import QMessageBox
+
+your_app_client_id = ''  # Enter your Cortex client ID here
+your_app_client_secret = ''  # Enter your Cortex client secret here
 
 class WelcomeScreen(QtWidgets.QMainWindow):
     def __init__(self):
         super(WelcomeScreen, self).__init__()
 
+        self.config_path = os.path.join(os.path.dirname(__file__), "config.json")
+        if your_app_client_id == '':
+            raise ValueError('Empty your_app_client_id. Please fill in your_app_client_id before running the example.')
+        if your_app_client_secret == '':
+            raise ValueError('Empty your_app_client_secret. Please fill in your_app_client_secret before running the example.')
+
         ui_path = os.path.join(os.path.dirname(__file__), "MainWindow.ui")
         uic.loadUi(ui_path, self)
 
         config_path = os.path.join(os.path.dirname(__file__), "config.json")
-        with open(config_path, "r") as config_file:
+        with open(self.config_path, "r") as config_file:
             config = json.load(config_file)
 
         self.settings = [config["push"], config["pull"], config["left"], config["right"]]
         print(self.settings)
         self.live = LiveAdvance(your_app_client_id, your_app_client_secret)
+        if "profile_name" in config:
+            self.profileEdit.setText(config["profile_name"])
 
         self.PushCombo.setCurrentIndex(self.settings[0])
         self.PullCombo.setCurrentIndex(self.settings[1])
@@ -47,8 +55,7 @@ class WelcomeScreen(QtWidgets.QMainWindow):
 
         self.OutPutLabel.setText(f"Current Emotiv BCI output: {action}")
         value = int(power * 100)
-        self.powerBar.setValue(value)
-
+        self.powerBar.setValue(value)ư
 
     def on_combobox_changed(self, name, value):
         if name == 'push':
@@ -62,8 +69,18 @@ class WelcomeScreen(QtWidgets.QMainWindow):
         save_config(self.settings)
 
     def start_mapping(self):
-        print('start')
-        liveThread = threading.Thread(target=self.live.start, args=[trained_profile_name])
+        profile_name = self.profileEdit.text().strip()
+        if not profile_name:
+            QtWidgets.QMessageBox.warning(self, "Missing Profile Name", "Please enter a trained profile name before starting.")
+            return
+
+        print(f'Starting with profile: {profile_name}')
+        with open(self.config_path, "r") as config_file:
+            config = json.load(config_file)
+        config["profile_name"] = profile_name
+        with open(self.config_path, "w") as config_file:
+            json.dump(config, config_file, indent=4)
+        liveThread = threading.Thread(target=self.live.start, args=[profile_name])
         liveThread.start()
 
     def pause_mapping(self):
