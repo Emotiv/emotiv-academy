@@ -270,6 +270,8 @@ class Subscribe():
         power = data.get('power')
         time = data.get('time')
         print(f'Command Data - Action: {action}, Power: {power}, Time: {time}')
+        # The threshold value (0.7) represents the minimum power level required to activate the "push" or "pull" mental commands.
+        # Adjust this value if necessary to fine-tune the sensitivity of the mental command detection.
         if action == 'push' and power > 0.7:
             with app.test_request_context():
                 pause()
