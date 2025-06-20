@@ -23,6 +23,7 @@ def press_n_hold(controller, button, duration):
 
 def press(controller, button):
     thread = threading.Thread(target=press_n_hold, args=(controller, button, 0.1))
+    thread.daemon = True
     thread.start()
 
 class LiveAdvance(QObject):
