@@ -55,8 +55,7 @@ class WelcomeScreen(QtWidgets.QMainWindow):
 
         self.OutPutLabel.setText(f"Current Emotiv BCI output: {action}")
         value = int(power * 100)
-        self.powerBar.setValue(value)ư
-
+        self.powerBar.setValue(value)
     def on_combobox_changed(self, name, value):
         if name == 'push':
             self.settings[0] = value
