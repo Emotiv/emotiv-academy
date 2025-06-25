@@ -1,38 +1,51 @@
 # Smart Light Control with Emotiv BCI and Node-RED
 
-Control a **LIFX smart light** using only your thoughts, powered by an **Emotiv EEG headset** and **Node-RED**. This brain-computer interface (BCI) project demonstrates how mental commands can directly influence smart home devices.
+Control a **LIFX smart light** using your thoughts, powered by an **Emotiv EEG headset** and **Node-RED**. This brain-computer interface (BCI) project demonstrates how mental commands can directly control smart devices.
 
 ## Overview
-- Use an **Emotiv headset**
-- Captures mental commands like *Push*, *Pull*
-- Integrates with **Node-RED** to process brain data
-- Sends real-time control signals to **LIFX smart bulbs**
 
-## Video Tutorial
-🎥 Follow the official step-by-step guide on **Emotiv Academy YouTube**:
-[Smart Light Control with BCI](https://www.youtube.com/watch?v=vdgzOriqC9Y&ab_channel=EmotivAcademy)
+This project enables real-time control of LIFX smart lights via BCI signals from an EMOTIV headset.
+
+- **Emotiv Headset**: Captures mental commands like *Push*, *Pull*.
+- **Node-RED**: Processes brain data and manages automation.
+- **LIFX Smart Bulbs**: Receive real-time control signals via Node-RED.
+
+A step-by-step video tutorial is available:  
+[Smart Light Control with BCI (YouTube)](https://www.youtube.com/watch?v=vdgzOriqC9Y&ab_channel=EmotivAcademy)
+
+## Features
+
+- **LIFX Integration:** Seamless control of LIFX smart bulbs.
+- **Real-time BCI:** Send mental commands to your lights via Emotiv headset.
+- **Customizable Flows:** Edit Node-RED flows for your automation needs.
+- **Easy Setup:** Pre-built Node-RED flow included.
+- **Cortex API:** Robust connection for EEG streaming and command detection.
+- **Profile management:** Use your own trained mental command profiles.
 
 ## Requirements
-- Emotiv Cortex running on your computer
-- Emotiv Insight, EpocX, or MN8 headset
+
+- Emotiv Cortex running on your computer ([download here](https://www.emotiv.com/developer/))
+- Emotiv Insight, EpocX, or MN8 headset ([purchase here](https://www.emotiv.com/))
 - LIFX smart light connected to the same network
 - Node-RED installed and configured
+- Node-RED Emotiv BCI and LIFX nodes
 
-## Before You Start
+## Getting Started
 
-To run the existing example, you will need to complete the following steps:
+1. **EMOTIV Hardware:** Obtain an EMOTIV headset from the [EMOTIV store](https://www.emotiv.com/).
+2. **Install Cortex:** [Download and install Cortex](https://www.emotiv.com/developer/) for Windows or macOS.
+3. **Accept Policies:** Log in via the EMOTIV Launcher and accept the latest Terms of Use, Privacy Policy, and EULA (GDPR compliance).
+4. **Create Cortex App:** In [My Account](https://account.emotiv.com/my-account/cortex-apps/), create a Cortex app and obtain your client ID and secret. [Register here](https://id.emotivcloud.com/eoidc/account/create).
+5. **Login in Launcher:** Log in with your Emotiv ID in the EMOTIV Launcher.
+6. **Train a Profile:** Open the EmotivBCI application, create a training profile, and train at least one Mental Command to a usable accuracy level.
+7. **Authorize Application:** The first time you run these examples, authorize them in the EMOTIV Launcher.
 
-1. You will need an EMOTIV headset. You can purchase a headset in our [online store](https://www.emotiv.com/)
-2. Next, [download and install](https://www.emotiv.com/developer/) the Cortex service. Note that Cortex is available for Windows and macOS.
-3. We have updated our Terms of Use, Privacy Policy and EULA to comply with GDPR. Please login via the EMOTIV Launcher to read and accept our latest policies.
-4. To get a Client ID and Client Secret, log in to your Emotiv account at [emotiv.com](https://www.emotiv.com/my-account/cortex-apps/) and create a Cortex app. If you don't have an EmotivID, [register here](https://id.emotivcloud.com/eoidc/account/registration/).
-5. Make sure you are logged in with your Emotiv ID in the EMOTIV Launcher.
-6. Open the EmotivBCI application and create a training profile with your headset. Train at least one Mental Command and ensure it reaches a usable accuracy.
-7. The first time you run these examples, authorize them through the EMOTIV Launcher.
+---
 
 ## Installation Guide
 
 ### 1. Install Node-RED
+
 **On macOS:**
 ```bash
 sudo npm install -g --unsafe-perm node-red
@@ -43,55 +56,71 @@ npm install -g --unsafe-perm node-red
 ```
 
 ### 2. Install Emotiv BCI Node
-Before installing, navigate to the Node-RED user directory:
 
-**On Windows:**
-```bash
-cd %USERPROFILE%\.node-red
-```
-**On macOS/Linux:**
-```bash
-cd ~/.node-red
-```
-Then install:
+Navigate to the Node-RED user directory:
+
+- **Windows:** `cd %USERPROFILE%\.node-red`
+- **macOS/Linux:** `cd ~/.node-red`
+
+Install the node:
 ```bash
 npm install node-red-contrib-emotiv-bci
 ```
 
-### 3. Start Node-RED (first time)
+### 3. Start Node-RED
+
 ```bash
 node-red
 ```
-Open your browser and go to: [http://127.0.0.1:1880/](http://127.0.0.1:1880/)
+Visit [http://127.0.0.1:1880/](http://127.0.0.1:1880/) in your browser.
 
 ### 4. Install LIFX Light Control Node
+
 In Node-RED:
 - Go to **Manage Palette** → **Install**
 - Search for: `node-red-contrib-lifx-api`
 - Click **Install**
 
-### 5. Connect Your Flow
-- Import the pre-built flow from the project folder:
-  - In Node-RED, click **Menu** (☰) → **Import**
-  - Click the **select a file to import** button
-  - Browse to and select the file: `SmartLightLifxBCI/Emotiv_Smart_Light_LIFX_BCI.json`
-  - Click **Open**, then confirm the import to load the flow into your workspace
+### 5. Import the Pre-Built Flow
 
-### 6. Configure Client ID and Secret
-After installing the Emotiv BCI node, open the following file:
+- In Node-RED, click **Menu** (☰) → **Import**
+- Click **select a file to import**
+- Browse to and select `SmartLightLifxBCI/Emotiv_Smart_Light_LIFX_BCI.json`
+- Click **Open**, then confirm the import
 
-```bash
-~/.node-red/node_modules/node-red-contrib-emotiv-bci/emotiv-bci/bci-config.js
-```
-*(On Windows: `C:\Users\<YourUsername>\.node-red\node_modules\node-red-contrib-emotiv-bci\emotiv-bci\bci-config.js`)*
+### 6. Configure Cortex Credentials
 
-Then add your **Client ID** and **Client Secret** into the appropriate fields inside that file.
+Edit your credentials in:
+
+- **macOS/Linux:** `~/.node-red/node_modules/node-red-contrib-emotiv-bci/emotiv-bci/bci-config.js`
+- **Windows:** `C:\Users\<YourUsername>\.node-red\node_modules\node-red-contrib-emotiv-bci\emotiv-bci\bci-config.js`
+
+Add your **Client ID** and **Client Secret**.
 
 ### 7. Set Your Trained Profile Name
 
-Before running the flow, double-click the `Profile Name` node in your imported Node-RED flow.
+- Double-click the `Profile Name` node in Node-RED.
+- Enter the exact name of your training profile.
+- Click **Done**.
 
-- Enter the exact name of the training profile you created in the EmotivBCI application.
-- Click **Done** to save the node configuration.
+---
 
-This ensures that the flow will load and use your trained mental command profile correctly.
+## Troubleshooting
+
+- **Connection Issues:** Ensure the Cortex service is running and you are logged in via the EMOTIV Launcher.
+- **No command detected:** Retrain your profile in EmotivBCI and ensure the selected action(s) are active and accurate.
+- **Node-RED errors:** Make sure Node-RED and all dependencies are correctly installed.
+
+## Resources
+
+- [Cortex API Data Subscription Documentation](https://emotiv.gitbook.io/cortex-api/data-subscription)
+- [EMOTIV Developer Portal](https://www.emotiv.com/developer/)
+- [YouTube Tutorial](https://www.youtube.com/watch?v=vdgzOriqC9Y&ab_channel=EmotivAcademy)
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you'd like to change.
+
+---
+
+If you need help, please consult the [EMOTIV support site](https://www.emotiv.com/pages/contact) or open a GitHub issue.
