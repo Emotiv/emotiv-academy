@@ -2,7 +2,7 @@
     {
         "id": "de0ea597316bf622",
         "type": "tab",
-        "label": "Flow 1",
+        "label": "Smart Light LIFX BCI",
         "disabled": false,
         "info": "",
         "env": []
@@ -12,11 +12,11 @@
         "type": "EMOTIV",
         "z": "de0ea597316bf622",
         "name": "EMOTIV",
-        "x": 160,
-        "y": 180,
+        "x": 140,
+        "y": 200,
         "wires": [
             [
-                "16f738a66a93923e"
+                "4f802961dbd6069c"
             ]
         ]
     },
@@ -27,8 +27,8 @@
         "name": "Mental Commands",
         "actionName": "push",
         "mcSen": 10,
-        "x": 370,
-        "y": 180,
+        "x": 630,
+        "y": 200,
         "wires": [
             [
                 "f9bfa6080a097b45",
@@ -53,8 +53,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 610,
-        "y": 100,
+        "x": 850,
+        "y": 160,
         "wires": [
             [
                 "b364f6b99328df8d"
@@ -78,8 +78,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 610,
-        "y": 280,
+        "x": 850,
+        "y": 240,
         "wires": [
             [
                 "48099a84972a5290"
@@ -91,7 +91,7 @@
         "type": "lifx-set-state",
         "z": "de0ea597316bf622",
         "name": "",
-        "api": "",
+        "api": "a1bd0ba5079195b4",
         "selector": "",
         "power": "",
         "color": "pink",
@@ -99,8 +99,8 @@
         "duration": "",
         "infrared": "",
         "fast": "true",
-        "x": 820,
-        "y": 100,
+        "x": 1020,
+        "y": 160,
         "wires": []
     },
     {
@@ -116,8 +116,27 @@
         "duration": "",
         "infrared": "",
         "fast": "true",
-        "x": 840,
-        "y": 280,
+        "x": 1020,
+        "y": 240,
         "wires": []
+    },
+    {
+        "id": "4f802961dbd6069c",
+        "type": "Profile-Name",
+        "z": "de0ea597316bf622",
+        "name": "Profile Name",
+        "profileName": "AddTrainedProfile",
+        "x": 370,
+        "y": 200,
+        "wires": [
+            [
+                "16f738a66a93923e"
+            ]
+        ]
+    },
+    {
+        "id": "a1bd0ba5079195b4",
+        "type": "lifx-config",
+        "token": ""
     }
 ]

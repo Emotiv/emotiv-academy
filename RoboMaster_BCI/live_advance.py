@@ -4,24 +4,31 @@ from pynput.keyboard import Key, Controller
 import json
 import time
 import threading
+
+from PyQt6.QtCore import QObject, pyqtSignal
+
 kb = Controller()
 
 threshold = 0.5 # Enter the threshold to activate the robot
 
-def press_n_hold(button, duration):
-        kb.press(button)
-        curr = time.time()
-        while time.time() - curr <= duration:
-            pass
-        kb.release(button)
+def press_n_hold(controller, button, duration):
+    if not controller.is_running:
+       return
 
+    kb.press(button)
+    time.sleep(duration)
+    kb.release(button)
 
-def press(button):
-    print(button)
-    thread = threading.Thread(target=press_n_hold, args=((button), 0.1))
+    print("press_n_hold", button)
+
+def press(controller, button):
+    thread = threading.Thread(target=press_n_hold, args=(controller, button, 0.1))
+    thread.daemon = True
     thread.start()
 
-class LiveAdvance():
+class LiveAdvance(QObject):
+    command_signal = pyqtSignal(dict)
+
     """
     A class to show mental command data at live mode of trained profile.
     You can load a profile trained on EmotivBCI or via train.py example
@@ -47,6 +54,7 @@ class LiveAdvance():
         To set the sensitivity of the 4 active mental command actions.
     """
     def __init__(self, app_client_id, app_client_secret, **kwargs):
+        super().__init__()
         self.c = Cortex(app_client_id, app_client_secret, debug_mode=True, **kwargs)
         self.c.bind(create_session_done=self.on_create_session_done)
         self.c.bind(query_profile_done=self.on_query_profile_done)
@@ -84,7 +92,12 @@ class LiveAdvance():
         if headsetId != '':
             self.c.set_wanted_headset(headsetId)
 
+        self.is_running = True
         self.c.open()
+
+    def pause(self):
+        self.is_running = False
+
 
     def load_profile(self, profile_name):
         """
@@ -221,9 +234,8 @@ class LiveAdvance():
     def on_load_unload_profile_done(self, *args, **kwargs):
         is_loaded = kwargs.get('isLoaded')
         print("on_load_unload_profile_done: " + str(is_loaded))
-        
-        if is_loaded == True:
-            # get active action
+
+        if is_loaded:
             self.get_active_action(self.profile_name)
         else:
             print('The profile ' + self.profile_name + ' is unloaded')
@@ -245,7 +257,7 @@ class LiveAdvance():
              the format such as {'action': 'neutral', 'power': 0.0, 'time': 1590736942.8479}
         """
         data = kwargs.get('data')
-        print('mc data: {}'.format(data))
+        # print('mc data: {}'.format(data))
         with open("config.json", "r") as config_file:
             config = json.load(config_file)
         keys = ['w', 'a', 's', 'd']
@@ -253,15 +265,19 @@ class LiveAdvance():
         pull_key = keys[config["pull"]]
         left_key = keys[config["left"]]
         right_key = keys[config["right"]]
+
         if data['action'] == "push" and data['power'] >= threshold:
-            press_n_hold(push_key, duration=0.1)
+            press(self, push_key)
         elif data['action'] == "pull" and data['power'] >= threshold:
-            press_n_hold(pull_key, duration=0.1)
+            press(self, pull_key)
         elif data['action'] == "left" and data['power'] >= threshold:
-            press_n_hold(left_key, duration=0.1)
+            press(self, left_key)
         elif data['action'] == "right" and data['power'] >= threshold:
-            press_n_hold(right_key, duration=0.1)            
-            
+            press(self, right_key)
+
+        if self.command_signal:
+            self.command_signal.emit(data)
+
     def on_get_mc_active_action_done(self, *args, **kwargs):
         data = kwargs.get('data')
         print('on_get_mc_active_action_done: {}'.format(data))
@@ -272,7 +288,7 @@ class LiveAdvance():
         print('on_mc_action_sensitivity_done: {}'.format(data))
         if isinstance(data, list):
             # get sensivity
-            new_values = [7,7,5,5]
+            new_values = [7, 7, 5, 5]
             self.set_sensitivity(self.profile_name, new_values)
         else:
             # set sensitivity done -> save profile

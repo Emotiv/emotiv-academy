@@ -4,135 +4,129 @@ import requests
 import urllib.parse
 
 from flask import Flask, redirect, request, jsonify, session
+import sys
 
 '''
 Pause Spotify music during "push" mental command using an Emotiv EEG headset.
 
 Inputs to Update:
-    -"your_app_client_id" and "your_app_client_secret": Emotiv credentials
-    -"CLIENT_ID" and "CLIENT_SECRET": Spotify credentials
+    -"emotiv_app_client_id" and "emotiv_app_client_secret": Emotiv credentials
+    -"spotify_client_id" and "spotify_client_secret": Spotify credentials
     -"profile_name_load": The trained profile name from EmotivBCI
 '''
 
-app = Flask(__name__) #initialize flask app
-app.secret_key = '' #set secret key for app (arbitrary string). E.g. "q948r7nuskdjf832rf34egr"
+app = Flask(__name__)
+app.secret_key = ''
 
+# --- REQUIRED CONFIGURATION ---
+# ⚠️ USER MUST FILL THESE VALUES BEFORE RUNNING THE APP ⚠️
+# Spotify Credentials
+spotify_client_id = ''
+spotify_client_secret = ''
 
-#Spotify Setup
+# Emotiv App Credentials
+emotiv_app_client_id = ''
+emotiv_app_client_secret = ''
 
-CLIENT_ID = '' #Spotify Client ID
-CLIENT_SECRET = ''#Spotify Client Secret
-REDIRECT_URI = 'http://localhost:5000/callback' #Set in the spotify developer app app
+# Emotiv Trained Profile
+profile_name_load = ''
 
+# --- Runtime Setup ---
+REDIRECT_URI = 'http://127.0.0.1:5000/callback'
 AUTH_URL = 'https://accounts.spotify.com/authorize'
 TOKEN_URL = 'https://accounts.spotify.com/api/token'
 API_BASE_URL = 'https://api.spotify.com/v1/'
+loaded_profile = False
 
-loaded_profile = False #global variable to set the load profile to only occur once
+def check_configuration():
+    missing = []
+    if not spotify_client_id or not spotify_client_secret:
+        missing.append("Spotify client ID/secret")
+    if not emotiv_app_client_id or not emotiv_app_client_secret:
+        missing.append("Emotiv app client ID/secret")
+    if not profile_name_load:
+        missing.append("Emotiv profile name")
+    if missing:
+        print("[CONFIG ERROR] Missing required configuration:", ", ".join(missing))
+        sys.exit(1)
+
+check_configuration()
 
 def run_emotiv():
-    # Please fill your emotiv application clientId and clientSecret before running script
-    your_app_client_id = '' #Emotiv Client ID
-    your_app_client_secret = '' #Emotiv Client Secret
-
-    s = Subscribe(your_app_client_id, your_app_client_secret)
-    streams = ['com']
+    s = Subscribe(emotiv_app_client_id, emotiv_app_client_secret)
+    streams = ['com', 'fac']
     s.start(streams)
 
-#Welcome site that will then redirect to spotify
-
-@app.route('/') #decorator that says this function should be called when user accesses route of application http://localhost:5000/
+@app.route('/')
 def index():
-    #display message and go to login when clicked
     return "Welcome to Spotify BCI Control <a href='/login'>Login with Spotify</a>"
-
-#Creating login endpoint to redirect to spotify login page
 
 @app.route('/login')
 def login():
-    scope = 'user-read-private user-read-email user-modify-playback-state user-read-playback-state' #scopes we need for permission
-
+    scope = 'user-read-private user-read-email user-modify-playback-state user-read-playback-state'
     params = {
-        'client_id': CLIENT_ID,
+        'client_id': spotify_client_id,
         'response_type': 'code',
         'scope': scope,
-        'redirect_uri': REDIRECT_URI, #where it will direct to on login
-        'show_dialog': True #if False (make False after debugging), even if we make request here then it assumes we don't need to login again. We want to force user to login to debug easier
-
+        'redirect_uri': REDIRECT_URI,
+        'show_dialog': True
     }
-
-    auth_url = f"{AUTH_URL}?{urllib.parse.urlencode(params)}" #encode params with urllib
-
+    auth_url = f"{AUTH_URL}?{urllib.parse.urlencode(params)}"
     return redirect(auth_url)
-
-
-#Callback endpoint for Spotify user to come back to once they login to Spotify.
 
 @app.route('/callback')
 def callback():
     if 'error' in request.args:
         return jsonify({"error": request.args['error']})
-    
+
     if 'code' in request.args:
         req_body = {
             'code': request.args['code'],
             'grant_type': 'authorization_code',
             'redirect_uri': REDIRECT_URI,
-            'client_id': CLIENT_ID,
-            'client_secret': CLIENT_SECRET
+            'client_id': spotify_client_id,
+            'client_secret': spotify_client_secret
         }
-
-        #send request body to spotify
         response = requests.post(TOKEN_URL, data=req_body)
         token_info = response.json()
-
-        global access_token_global #global variable so that we can still access after going to cortex
+        global access_token_global
         access_token_global = token_info['access_token']
-
-        run_emotiv() #enter client ID and client secret and run Subscribe function to get mental command outputs
+        run_emotiv()
         return redirect('/')
-    
+
 @app.route('/pause')
 def pause():
     print('STARTING SPOTIFY PAUSE')
-    
-    headers = {
-        'Authorization': f"Bearer {access_token_global}"
-    }
-
-    # Replace this with your specific device ID if "no device found" error. 
-    #Instructions to Get Device Id: 1. uncomment the "devices" function 2. Set endpoint of "callback" to "devices"
-    # device_id = 'YOUR_DEVICE_ID' # e.g., 6126575f618c948dcfd13e9431f84e37ae4f2157
-    # url = f"{API_BASE_URL}me/player/play?device_id={device_id}"
-
+    headers = {'Authorization': f"Bearer {access_token_global}"}
     url = f"{API_BASE_URL}me/player/pause"
-
-    response = requests.put(url, headers=headers) #play takes a PUT request
-
-    # Check if the response was successful
+    response = requests.put(url, headers=headers)
     if response.status_code == 200:
         return "Playback paused successfully!"
-    
     else:
-        # Return the error details from Spotify
         pause = response.json()
         return jsonify(pause), response.status_code
-    
+
+@app.route('/resume')
+def resume():
+    print('STARTING SPOTIFY RESUME')
+    headers = {'Authorization': f"Bearer {access_token_global}"}
+    url = f"{API_BASE_URL}me/player/play"
+    response = requests.put(url, headers=headers)
+    if response.status_code == 200:
+        return "Playback resumed successfully!"
+    else:
+        resume = response.json()
+        return jsonify(resume), response.status_code
+
 @app.route('/devices')
 def devices():
     if 'access_token' not in session:
         return redirect('/login')
-    
-    headers = {
-        'Authorization': f'Bearer {session["access_token"]}'
-    }
-    
+    headers = {'Authorization': f'Bearer {session["access_token"]}'}
     response = requests.get(API_BASE_URL + 'me/player/devices', headers=headers)
     devices = response.json()
-    
     return jsonify(devices)
 
-    
 class Subscribe():
     """
     A class to subscribe data stream.
@@ -164,6 +158,7 @@ class Subscribe():
         self.c.bind(create_session_done=self.on_create_session_done)
         self.c.bind(new_data_labels=self.on_new_data_labels)
         self.c.bind(new_com_data=self.on_new_com_data)
+        self.c.bind(new_fe_data=self.on_new_fe_data)
         self.c.bind(inform_error=self.on_inform_error)
 
     def start(self, streams, headsetId=''):
@@ -188,10 +183,8 @@ class Subscribe():
         """
 
         self.streams = streams
-
         if headsetId != '':
             self.c.set_wanted_headset(headsetId)
-
         self.c.open()
 
     def sub(self, streams):
@@ -253,8 +246,6 @@ class Subscribe():
         data = kwargs.get('data')
         stream_name = data['streamName']
         stream_labels = data['labels']
-        # print('{} labels are : {}'.format(stream_name, stream_labels))
-
 
     def on_new_com_data(self, *args, **kwargs):
         """
@@ -265,51 +256,53 @@ class Subscribe():
         data: dictionary
              The values in the array pow match the labels in the array labels return at on_new_com_data_labels
         """
-
         global loaded_profile
-
-        if loaded_profile == False:
-
+        if not loaded_profile:
             status_load = "load"
-            profile_name_load = 'SpotifyDemo' #Enter the profile name you want to use from EmotivBCI (train this profile first with a mental command!)
-
             self.profile_name = profile_name_load
             self.c.set_wanted_profile(profile_name_load)
-
             self.c.setup_profile(profile_name_load, status_load)
-
             loaded_profile = True
 
-        # self.c.get_current_profile()
-
-        actions = ['push'] #add more mental commands here if you want to add additional functionality
-        self.c.set_mental_command_active_action(actions)
+        self.c.set_mental_command_active_action(['push', 'pull'])
         data = kwargs.get('data')
-
-        action = data.get('action') #accesing the action key in the incoming dictionary 
+        action = data.get('action')
         power = data.get('power')
         time = data.get('time')
-
-        # Print the command data
         print(f'Command Data - Action: {action}, Power: {power}, Time: {time}')
-
-        if action == 'push' and power > 0.6: #you can adjust the threshold based on how easy/diffifult it is to activate the push command
-            # Turn on play function in spotify
+        # The threshold value (0.7) represents the minimum power level required to activate the "push" or "pull" mental commands.
+        # Adjust this value if necessary to fine-tune the sensitivity of the mental command detection.
+        if action == 'push' and power > 0.7:
             with app.test_request_context():
                 pause()
+        elif action == 'pull' and power > 0.7:
+            with app.test_request_context():
+                resume()
 
+    def on_new_fe_data(self, *args, **kwargs):
+        data = kwargs.get('data')
+        eye_action = data.get('eyeAct')
+        upper_action = data.get('uAct')
+        upper_power = data.get('uPow')
+        lower_action = data.get('lAct')
+        lower_power = data.get('lPow')
+        time = data.get('time')
+        print(f'Facial Expr Data - Eye: {eye_action}, Upper: {upper_action} ({upper_power}), Lower: {lower_action} ({lower_power}), Time: {time}')
 
-    # callbacks functions
+        if lower_action and lower_action.strip().lower() == 'clench' and lower_power > 0.7:
+            with app.test_request_context():
+                pause()
+        elif lower_action and lower_action.strip().lower() == 'smile' and lower_power > 0.7:
+            with app.test_request_context():
+                resume()
+
     def on_create_session_done(self, *args, **kwargs):
         print('on_create_session_done')
-
-        # subribe data 
         self.sub(self.streams)
 
     def on_inform_error(self, *args, **kwargs):
         error_data = kwargs.get('error_data')
         print(error_data)
 
-
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', debug=True) #Run Flask App
+    app.run(host='127.0.0.1', debug=True)
