@@ -32,7 +32,7 @@ A step-by-step tutorial video is available [here](https://www.youtube.com/watch?
 1. **EMOTIV Hardware:** Obtain an EMOTIV headset from the [EMOTIV store](https://www.emotiv.com/).
 2. **Install Cortex:** [Download and install Cortex](https://www.emotiv.com/developer/) for Windows or macOS.
 3. **Accept Policies:** Log in via the EMOTIV Launcher and accept the latest Terms of Use, Privacy Policy, and EULA (GDPR compliance).
-4. **Create Cortex App:** On [EMOTIV.com](https://www.emotiv.com/my-account/cortex-apps/), create a Cortex app and obtain your client ID and secret. [Register here](https://id.emotivcloud.com/eoidc/account/registration/) if you don't have an account.
+4. **Create Cortex App:** In [My Account](https://account.emotiv.com/my-account/cortex-apps/), create a Cortex app and obtain your client ID and secret. [Register here](https://id.emotivcloud.com/eoidc/account/registration/) if you don't have an account.
 5. **Login in Launcher:** Log in with your Emotiv ID in the EMOTIV Launcher.
 6. **Train a Profile:** Open the EmotivBCI application, create a training profile, and train at least one Mental Command action to a usable accuracy level.
 7. **Authorize Application:** The first time you run this app, authorize it in the EMOTIV Launcher.
