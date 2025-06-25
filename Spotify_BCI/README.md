@@ -1,96 +1,99 @@
-## Spotify BCI
+# Brain-Computer Interface Controlled Spotify Player
 
-Control Spotify playback **using your brain** with Emotiv's EEG headset. This project enables pause/resume of music via trained mental commands or facial expressions (e.g., clench or smile).
+Developed by Emotiv Academy.  
+Control Spotify playback—pause and resume music—using your brain with an Emotiv EEG headset.
+
+## Overview
+
+This project enables real-time Spotify playback control using mental commands or facial expressions detected by the Emotiv headset. The system maps "push" or "clench" to pause, and "pull" or "smile" to resume music. It uses a lightweight Flask server, integrates with the Spotify Web API, and provides visual feedback for command recognition.
+
+A step-by-step tutorial video is available [here](https://www.youtube.com/watch?v=-mUKNqEfIxo).
+
+## Features
+
+- **Spotify Web API integration**: Play/pause music with your brain.
+- **Real-time BCI control**: Use mental commands or facial expressions for hands-free operation.
+- **Live feedback UI**: Visual debug interface shows detected commands (optional).
+- **Educational Codebase**: Simple Python + Flask code, ideal for learning BCI-Web API integration.
+- **Cortex API integration**: Robust connection for EEG streaming and command detection.
+- **Customizable mapping**: Easily change which commands trigger which Spotify actions.
+
+## Requirements
+
+- Python 3.8+ (recommended: Python 3.9)
+- Emotiv headset ([purchase here](https://www.emotiv.com/))
+- [Cortex Service](https://www.emotiv.com/developer/) (Windows/macOS only)
+- Flask: `pip install flask`
+- requests: `pip install requests`
+- websocket-client: `pip install websocket-client`
+- python-dispatch: `pip install python-dispatch`
+
+## Getting Started
+
+1. **Clone this repository:**
+    ```bash
+    git clone https://github.com/Emotiv/emotiv-academy.git
+    cd emotiv-academy/Spotify_BCI
+    ```
+
+2. **Install dependencies:**
+    ```bash
+    pip install flask requests websocket-client python-dispatch
+    ```
+
+3. **Create applications:**
+    - **Spotify App**: [Create one here](https://developer.spotify.com/dashboard) and note your client ID/secret.
+    - **Emotiv Cortex App**: [Register here](https://account.emotiv.com/my-account/cortex-apps/).
+
+4. **Setup hardware and software:**
+    - Get an Emotiv headset.
+    - Download and install Cortex service.
+    - Log in and accept EMOTIV policies via the Launcher.
+    - Train "push" and "pull" (or facial expressions) in EmotivBCI until accuracy is sufficient.
+
+5. **Configure credentials:**
+    - Open `spotify_bci.py` and enter your Spotify and Emotiv app credentials:
+      ```python
+      spotify_client_id = 'your-spotify-client-id'
+      spotify_client_secret = 'your-spotify-client-secret'
+      emotiv_app_client_id = 'your-emotiv-client-id'
+      emotiv_app_client_secret = 'your-emotiv-client-secret'
+      profile_name_load = 'your-trained-profile-name'
+      ```
+
+6. **Run the app:**
+    ```bash
+    python spotify_bci.py
+    ```
+
+7. **Open in your browser and authorize:**
+    ```
+    http://127.0.0.1:5000
+    ```
+    Click **Login with Spotify** and authorize access.
+
+## Project Structure
+
+- `spotify_bci.py`: Main application entry point.
+- `cortex.py`: Cortex API wrapper for EEG data and command recognition.
+- `templates/`: (If present) Flask HTML templates for visual feedback.
+
+## Troubleshooting
+
+- **Connection issues:** Ensure Cortex service is running and you are logged in via the EMOTIV Launcher.
+- **No command detected:** Retrain your profile in EmotivBCI for better accuracy.
+- **Spotify login problems:** Double-check your Spotify app credentials and redirect URIs.
+
+## Resources
+
+- [Cortex API Data Subscription Documentation](https://emotiv.gitbook.io/cortex-api/data-subscription)
+- [EMOTIV Developer Portal](https://www.emotiv.com/developer/)
+- [YouTube Tutorial](https://www.youtube.com/watch?v=-mUKNqEfIxo)
+
+## Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss.
 
 ---
 
-### 🎧 Overview
-
-- **EEG Devices Supported**: [Emotiv Insight / EpocX / MN8 / etc.](https://www.emotiv.com/pages/emotiv-insight-leading-mind-control-bci-technology-b)
-- **Backend**: Python + Flask
-- **Spotify Integration**: Web API authentication and playback control
-- **Control Options**: Mental commands & facial expressions (e.g., 'push', 'pull', 'clench', 'smile')
-- **Command Mapping**: Push/clench = Pause, Pull/smile = Resume
-- **Live mental command feedback** (optional)
-
----
-
-### 📺 Tutorial
-
-Watch the step-by-step video guide on Emotiv Academy's YouTube:
-[![Watch here](https://www.youtube.com/watch?v=-mUKNqEfIxo)](https://www.youtube.com/watch?v=-mUKNqEfIxo&ab_channel=EmotivAcademy)
-
----
-
-### 🚀 Features
-
-- Control Spotify playback with mental commands or facial expressions
-- Lightweight Flask server for easy local control
-- Visual debug interface for real-time command feedback (optional)
-- Simple, educational integration of Emotiv BCI with a popular web API
-
----
-
-### 🛠️ Setup
-
-#### 1. Clone the Repository
-```bash
-git clone https://github.com/Emotiv/emotiv-academy.git
-cd emotiv-academy
-```
-
-#### 2. Install Dependencies
-```bash
-pip install flask requests websocket-client python-dispatch
-```
-
-#### 3. Create Applications
-
-- **Spotify App**: via [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
-
-#### 4. Before You Start
-
-- Get an [Emotiv headset](https://www.emotiv.com/)
-- [Download and install Cortex service](https://www.emotiv.com/developer/) (Windows/macOS only)
-- Accept EMOTIV policies via EMOTIV Launcher
-- Login to EMOTIV Launcher
-- Open **EmotivBCI** app, create a profile, train **both** "push" and "pull" Mental Command actions until they reach usable accuracy
-- Authorize this project in the Launcher
-
-#### 5. Fill in Your Credentials in `spotify_bci.py`
-```python
-spotify_client_id = 'your-spotify-client-id'
-spotify_client_secret = 'your-spotify-client-secret'
-emotiv_app_client_id = 'your-emotiv-client-id'
-emotiv_app_client_secret = 'your-emotiv-client-secret'
-profile_name_load = 'your-trained-profile-name'
-```
-
-#### 6. Run the App
-```bash
-python spotify_bci.py
-```
-
-#### 7. Open in Browser
-```
-http://127.0.0.1:5000
-```
-Click **Login with Spotify** and authorize access.
-
----
-
-### 📦 Dependencies
-
-- Python >= 3.8 (Recommended: 3.9)
-- Flask
-- requests
-- websocket-client
-- python-dispatch
-- Emotiv Cortex SDK (ensure `cortex.py` is in the same directory)
-
----
-
-### ⚠️ Notes
-
-- Requires trained EmotivBCI profile with usable accuracy for "push" and "pull"
-- You can choose mental (`com`) or facial expression (`fac`) mode in the code
+If you need additional help, consult the [EMOTIV support site](https://www.emotiv.com/pages/contact) or open a GitHub issue.
