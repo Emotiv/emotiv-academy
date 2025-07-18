@@ -419,6 +419,7 @@ class Cortex(Dispatcher):
 
     def connect_headset(self, headset_id):
         print('connect headset --------------------------------')
+        print('connecting to headset: ', headset_id)
         connect_headset_request = {
             "jsonrpc": "2.0", 
             "id": CONNECT_HEADSET_ID,

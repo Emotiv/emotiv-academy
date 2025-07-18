@@ -308,6 +308,8 @@ class Cortex(Dispatcher):
             self.emit('inject_marker_done', data=result_dic['marker'])
         elif req_id == INJECT_MARKER_REQUEST_ID:
             self.emit('update_marker_done', data=result_dic['marker'])
+        elif req_id == REFRESH_HEADSET_LIST_ID:
+            print('refresh headset list')
         else:
             print('No handling for response of request ' + str(req_id))
 
@@ -423,6 +425,7 @@ class Cortex(Dispatcher):
 
     def connect_headset(self, headset_id):
         print('connect headset --------------------------------')
+        print('connecting to headset ', headset_id)
         connect_headset_request = {
             "jsonrpc": "2.0", 
             "id": CONNECT_HEADSET_ID,
@@ -549,6 +552,7 @@ class Cortex(Dispatcher):
 
     def disconnect_headset(self):
         print('disconnect headset --------------------------------')
+        print('connecting to headset ', self.headset_id)
         disconnect_headset_request = {
             "jsonrpc": "2.0", 
             "id": DISCONNECT_HEADSET_ID,
@@ -649,7 +653,7 @@ class Cortex(Dispatcher):
         self.ws.send(json.dumps(get_profile_json))
 
     def setup_profile(self, profile_name, status):
-        print('setup profile: ' + status + ' -------------------------------- ')
+        print('setup profile: ' + profile_name + ", " + status + ' -------------------------------- ')
         setup_profile_json = {
             "jsonrpc": "2.0",
             "method": "setupProfile",

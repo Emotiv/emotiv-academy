@@ -31,6 +31,10 @@ emotiv_app_client_secret = ''
 # Emotiv Trained Profile
 profile_name_load = ''
 
+# Specify the headset ID to connect to.
+# Leave it as an empty string ('') to automatically connect to the first available headset in the list.
+headset_Id = ''
+
 # --- Runtime Setup ---
 REDIRECT_URI = 'http://127.0.0.1:5000/callback'
 AUTH_URL = 'https://accounts.spotify.com/authorize'
@@ -55,7 +59,7 @@ check_configuration()
 def run_emotiv():
     s = Subscribe(emotiv_app_client_id, emotiv_app_client_secret)
     streams = ['com', 'fac']
-    s.start(streams)
+    s.start(streams, headset_Id)
 
 @app.route('/')
 def index():

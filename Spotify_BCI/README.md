@@ -61,12 +61,19 @@ A step-by-step tutorial video is available [here](https://www.youtube.com/watch?
       profile_name_load = 'your-trained-profile-name'
       ```
 
-6. **Run the app:**
+6. **(Optional) Specify which headset to connect:**
+    In `spotify_bci.py`, set the headset ID if you want to target a specific device.
+    Leave it empty (`''`) to auto-connect to the first available headset.
+    ```python
+    headset_Id = ''
+    ```
+
+7. **Run the app:**
     ```bash
     python spotify_bci.py
     ```
 
-7. **Open in your browser and authorize:**
+8. **Open in your browser and authorize:**
     ```
     http://127.0.0.1:5000
     ```
