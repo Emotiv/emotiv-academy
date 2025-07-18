@@ -73,6 +73,7 @@ A step-by-step tutorial video is available [here](https://www.youtube.com/watch?
     - Optionally, adjust the key mappings for push, pull, left, and right actions.
     - Click **Start** to begin streaming and controlling the robot.
     - Watch the command output and power indicator for live feedback.
+    - *Note: Make sure this trained profile was created using the same headset you intend to connect.*
 
 ## Troubleshooting
 
