@@ -57,16 +57,23 @@ A step-by-step tutorial video is available [here](https://www.youtube.com/watch?
     your_app_client_id = 'YOUR_CLIENT_ID'
     your_app_client_secret = 'YOUR_CLIENT_SECRET'
     ```
-3. Run the application:
+3. (Optional) Specify which headset to connect:
+    In `main.py`, set the headset ID if you want to target a specific device.
+    Leave it empty (`''`) to auto-connect to the first available headset.
+    ```python
+    headset_Id = ''
+    ```
+4. Run the application:
     ```bash
     python main.py
     ```
 
-4. In the UI:
+5. In the UI:
     - Enter your trained profile name.
     - Optionally, adjust the key mappings for push, pull, left, and right actions.
     - Click **Start** to begin streaming and controlling the robot.
     - Watch the command output and power indicator for live feedback.
+    - *Note: Make sure this trained profile was created using the same headset you intend to connect.*
 
 ## Troubleshooting
 

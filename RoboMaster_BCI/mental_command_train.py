@@ -280,7 +280,7 @@ def main():
 
     # list actions which you want to train
     actions = ['neutral', 'push', 'pull']
-    t.start(profile_name, actions)
+    t.start(profile_name, actions, headsetId)
 
 if __name__ =='__main__':
     main()

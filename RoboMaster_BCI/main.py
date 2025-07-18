@@ -12,6 +12,10 @@ from PyQt6.QtWidgets import QMessageBox
 your_app_client_id = ''  # Enter your Cortex client ID here
 your_app_client_secret = ''  # Enter your Cortex client secret here
 
+# Specify the headset ID to connect to.
+# Leave it as an empty string ('') to automatically connect to the first available headset in the list.
+headsetId = ''
+
 class WelcomeScreen(QtWidgets.QMainWindow):
     def __init__(self):
         super(WelcomeScreen, self).__init__()
@@ -79,7 +83,7 @@ class WelcomeScreen(QtWidgets.QMainWindow):
         config["profile_name"] = profile_name
         with open(self.config_path, "w") as config_file:
             json.dump(config, config_file, indent=4)
-        liveThread = threading.Thread(target=self.live.start, args=[profile_name])
+        liveThread = threading.Thread(target=self.live.start, args=[profile_name, headsetId])
         liveThread.start()
 
     def pause_mapping(self):
