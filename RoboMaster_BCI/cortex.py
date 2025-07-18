@@ -552,7 +552,7 @@ class Cortex(Dispatcher):
 
     def disconnect_headset(self):
         print('disconnect headset --------------------------------')
-        print('connecting to headset ', self.headset_id)
+        print('disconnecting from headset ', self.headset_id)
         disconnect_headset_request = {
             "jsonrpc": "2.0", 
             "id": DISCONNECT_HEADSET_ID,
