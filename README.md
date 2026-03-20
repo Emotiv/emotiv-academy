@@ -18,6 +18,13 @@ This repository currently contains the following showcased BCI projects:
 
 - **[Spotify_BCI](./Spotify_BCI)**  
   (Description coming soon) Control your Spotify playback using EMOTIV BCI signals.
+- 
+**[Developer_Guide_examples](./Developer_Guide_examples)**  
+  Examples of how to use the Cortex API. Following the examples from the videos.
+  - [Episode 5 - Get Cortex Info](./Developer_Guide_examples/episode_5_-_Get_Cortex_Info)
+  _[Youtube tutorial](https://www.youtube.com/watch?v=vdgzOriqC9Y&ab_channel=EmotivAcademy)_
+  - [Episode 6 - Cortex flow example](./Developer_Guide_examples/episode_6_-_Cortex_flow_example)
+  _[Youtube tutorial](https://www.youtube.com/watch?v=vdgzOriqC9Y&ab_channel=EmotivAcademy)_
 
 Each project includes a detailed README with setup instructions, requirements, and links to step-by-step video tutorials.
 
